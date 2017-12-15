@@ -13,16 +13,8 @@ class SpMl:
     
     ivv = pd.DataFrame()
     gld = pd.DataFrame()
-    nm_ivv = pd.DataFrame()
-    nm_gld = pd.DataFrame()
     prices = pd.DataFrame()
     features = pd.DataFrame()
-    rm10_ivv = pd.DataFrame()
-    rm20_ivv = pd.DataFrame()
-    rm40_ivv = pd.DataFrame()
-    rm10_ivv_ = pd.DataFrame()
-    rm20_ivv_ = pd.DataFrame()
-    rm40_ivv_ = pd.DataFrame()
 
     def __init__(self):
         pass
