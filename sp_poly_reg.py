@@ -18,6 +18,9 @@ from sp_ml import SpMl
 class SpPolyReg(SpMl):
     'stock prediction by polynomial regression'
     
+    best_degree = 0
+    week_forecast = pd.DataFrame()
+    
     def __init__(self):
         pass
         
@@ -84,6 +87,7 @@ class SpPolyReg(SpMl):
         plt.show()
         return
 
+
     def do_regression(self):
         X_train = self.features[65:-50]
         y_train = self.prices[70:-45]
@@ -98,6 +102,8 @@ class SpPolyReg(SpMl):
         #print X_train[:,1]
         #print y_train.head()
 
+        variance = -1000
+        
         for count, degree in enumerate([1, 2, 3, 4, 5, 6, 7, 8]):
             model = make_pipeline(PolynomialFeatures(degree), Ridge())
             model.fit(X_train, y_train)
@@ -109,7 +115,11 @@ class SpPolyReg(SpMl):
             print("degree : %d" % degree)
             print("Mean squared error: %.2f" % mean_squared_error(y_test, y_pred))
             # Explained variance score: 1 is perfect prediction
-            print('Variance score: %.2f' % r2_score(y_test, y_pred))
+            score = r2_score(y_test, y_pred)
+            if(score > variance):
+                variance = score
+                self.best_degree = degree
+            print('Variance score: %.2f' % score)
     
         plt.show()         
         return
@@ -120,7 +130,8 @@ class SpPolyReg(SpMl):
         y_train = self.prices[70:]
         X_future = self.features[-5:]
 
-        model = make_pipeline(PolynomialFeatures(degree=2), Ridge())
+        print "best degree = ", self.best_degree
+        model = make_pipeline(PolynomialFeatures(degree=self.best_degree), Ridge())
         model.fit(X_train, y_train)
 
         # Make predictions using the testing set
@@ -140,6 +151,8 @@ class SpPolyReg(SpMl):
         df = df.set_index('Date')
         df['Prediction'] = df['Prediction'] * self.ivv['Adj Close'][0]
 
+        self.week_forecast = df;
+        
         real_prices = self.prices[-10:] * self.ivv['Adj Close'][0]
         print real_prices
         print df 

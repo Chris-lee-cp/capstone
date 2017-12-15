@@ -16,7 +16,7 @@ from sp_ml import SpMl
 
 class SpLinearReg(SpMl):
     'stock prediction by linear regression'
-    
+
     def __init__(self):
         pass
         

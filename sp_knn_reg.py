@@ -15,6 +15,9 @@ from sp_ml import SpMl
 class SpKnnReg(SpMl):
     'stock prediction by KNN regression'
 
+    best_neighbor = 0
+    week_forecast = pd.DataFrame()
+    
     def __init__(self):
         pass
         
@@ -106,6 +109,7 @@ class SpKnnReg(SpMl):
         #print X_train[:,1]
         #print y_train.head()
 
+        variance = -1000
         for count, n_neighbors in enumerate([5, 7, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80 ,90, 100, 200]):
             neigh = KNeighborsRegressor(n_neighbors, weights='distance')
             neigh.fit(X_train, y_train)
@@ -117,7 +121,12 @@ class SpKnnReg(SpMl):
             print("n_neighbors : %d" % n_neighbors)
             print("Mean squared error: %.2f" % mean_squared_error(y_test, y_pred))
             # Explained variance score: 1 is perfect prediction
-            print('Variance score: %.2f' % r2_score(y_test, y_pred))
+            score = r2_score(y_test, y_pred)
+            if(variance < score):
+                variance = score
+                self.best_neighbor = n_neighbors
+
+            print('Variance score: %.2f' % variance)
     
         plt.show()
         
@@ -130,7 +139,8 @@ class SpKnnReg(SpMl):
         y_train = self.prices[70:]
         X_future = self.features[-5:]
 
-        neigh = KNeighborsRegressor(n_neighbors=100)
+        print "best neighbor = ", self.best_neighbor
+        neigh = KNeighborsRegressor(n_neighbors=self.best_neighbor)
         neigh.fit(X_train, y_train)
 
         # Make predictions using the testing set
@@ -159,6 +169,8 @@ class SpKnnReg(SpMl):
         real_prices = self.ivv['Adj Close'][-10:]
         print real_prices            
         print df 
+
+        self.week_forecast = df;
 
         ax = real_prices.plot()
         df['Prediction'].plot(title='KNN Regression stock price forecasting', ax = ax)
