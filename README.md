@@ -20,6 +20,7 @@ If you do not have Python installed yet, it is highly recommended that you insta
 
 
 Code
+
 4 python codes and one ipython notebook file. 
 sp_ml.py - base class
 sp_linear_reg.py - define linear regression algorithm/pre-processing/predict methods in this class
@@ -29,13 +30,16 @@ sp_main.ipynb - ipython notebook file. this create each algorithm instances and 
 
 
 Run
+
 In a terminal or command window, navigate to the top-level project directory capstone/ (that contains this README) and run one of the following commands:
 
 ipython notebook sp_main.ipynb
+
 or
 
 jupyter notebook sp_main.ipynb
 This will open the Jupyter Notebook software and project file in your browser.
 
 Data
+
 Data files for this project were attained from yahoo finance web site. pandas_datareader get_data_yahoo method was used. 
