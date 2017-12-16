@@ -119,7 +119,7 @@ class SpKnnReg(SpMl):
             LR_result.plot(title="n_neighbors %d" % n_neighbors)
             # The mean squared error
             print("n_neighbors : %d" % n_neighbors)
-            print("Mean squared error: %.2f" % mean_squared_error(y_test, y_pred))
+            print("Mean squared error: %.2f" % mean_squared_error(y_test*100, y_pred*100))
             # Explained variance score: 1 is perfect prediction
             score = r2_score(y_test, y_pred)
             if(variance < score):

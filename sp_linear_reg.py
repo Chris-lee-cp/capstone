@@ -115,13 +115,14 @@ class SpLinearReg(SpMl):
         LR_result = LR_result.assign(Prediction = y_pred)
         # print LR_result
         LR_result = LR_result.rename(columns = {'Adj Close':'Real price'})
-        LR_result[['Real price','Prediction']].plot(title='Linear Regression tes result')
+        LR_result[['Real price','Prediction']].plot(title='Linear Regression test result')
         plt.show()
 
         # The coefficients
         print('Coefficients: \n', regr.coef_)
         # The mean squared error
-        print("Mean squared error: %.2f" % mean_squared_error(y_test, y_pred))
+        print y_test, y_pred
+        print("Mean squared error: %.2f" % mean_squared_error(y_test * self.ivv['Adj Close'][0], y_pred * self.ivv['Adj Close'][0]))
         # Explained variance score: 1 is perfect prediction
         print('Variance score: %.2f' % r2_score(y_test, y_pred))
         

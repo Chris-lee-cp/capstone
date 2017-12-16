@@ -108,12 +108,18 @@ class SpPolyReg(SpMl):
             model = make_pipeline(PolynomialFeatures(degree), Ridge())
             model.fit(X_train, y_train)
             y_pred = model.predict(X_test)
-            print y_pred
-            LR_result = pd.DataFrame(y_pred)
-            LR_result.plot(title="degree %d" % degree)
+
+            LR_result = pd.DataFrame(y_test)
+            LR_result = LR_result.assign(Prediction = y_pred)
+            LR_result = LR_result.rename(columns = {'Adj Close':'Real price'})
+            LR_result[['Real price','Prediction']].plot(title="Polynomial Regression test result degree %d" % degree)
+        
+            #print y_pred
+            #LR_result = pd.DataFrame(y_pred)
+            #LR_result.plot(title="degree %d" % degree)
             # The mean squared error
             print("degree : %d" % degree)
-            print("Mean squared error: %.2f" % mean_squared_error(y_test, y_pred))
+            print("Mean squared error: %.2f" % mean_squared_error(y_test * self.ivv['Adj Close'][0], y_pred * self.ivv['Adj Close'][0]))
             # Explained variance score: 1 is perfect prediction
             score = r2_score(y_test, y_pred)
             if(score > variance):
